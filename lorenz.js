@@ -4,7 +4,7 @@ let BETA = 8 / 3;
 let TIME_STEP = 0.01;
 let COLOR_OFFSET = 0;
 let MAX_TRAIL_LENGTH = 100;
-let POINTS_COUNT = 30;
+let POINTS_COUNT = 10;
 let points;
 let debug = false;
 let colorPalette;
