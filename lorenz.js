@@ -7,6 +7,7 @@ let MAX_TRAIL_LENGTH = 100;
 let POINTS_COUNT = 30;
 let points;
 let debug = false;
+let colorPalette;
 
 class Point {
   constructor(x, y, z) {
@@ -38,44 +39,32 @@ class Point {
     let prev = this.trail[0];
     for (let i = 1; i < this.trail.length; ++i) {
       let next = this.trail[i];
-      // let color = palette(
-			// 	i,
-			// 	createVector(0.5, 0.5, 0.5),
-			// 	createVector(0.5, 0.5, 0.5),
-			// 	createVector(1.0, 1.0, 1.0),
-			// 	createVector(0.0, 0.1, 0.2)
-			// );
+      let color = palette(
+				(i + COLOR_OFFSET) / MAX_TRAIL_LENGTH,
+				colorPalette.a,
+				colorPalette.b,
+				colorPalette.c,
+				colorPalette.d
+			);
       stroke(
-				this.color.r,
-				255 - (this.trail.length - i) * (255 / MAX_TRAIL_LENGTH),
-				this.color.b + COLOR_OFFSET,
+				color.r * 255,
+				color.g * 255,
+				color.b * 255,
 				100 - (this.trail.length - i) * (100 / MAX_TRAIL_LENGTH)
 			);
-      // stroke(
-      //   color.r * 255,
-      //   color.g * 255,
-      //   color.b * 255,
-      //   100 - (this.trail.length - i) * (100 / MAX_TRAIL_LENGTH)
-			// );
       line(prev.x, prev.y, prev.z, next.x, next.y, next.z);
       prev = next;
     }
   }
 }
 
-function palette(t, a, b, c, d )
-{
-  let result = {
-    r: 0,
-    g: 0,
-    b: 0,
-  }
-
-  result.r = a.x + b.x * cos(6.28318 * (c.x * t + d.x));
-  result.g = a.y + b.y * cos(6.28318 * (c.y * t + d.y));
-  result.b = a.z + b.z * cos(6.28318 * (c.z * t + d.z));
-
-  return result;
+// Implementation of https://www.iquilezles.org/www/articles/palettes/palettes.htm
+function palette(t, a, b, c, d ) {
+  return {
+    r: a.x + b.x * cos(6.28318 * (c.x * t + d.x)),
+    g: a.y + b.y * cos(6.28318 * (c.y * t + d.y)),
+    b: a.z + b.z * cos(6.28318 * (c.z * t + d.z)),
+  };
 }
 
 function resetSketch() {
@@ -114,16 +103,17 @@ function createMenu() {
   menu.inp_MAX_TRAIL_LENGTH.input(changeTrailLength);
   menu.inp_POINTS_COUNT.input(changePointsCount);
 
-  let reset = createButton("Reset");
-  createElement("br").parent('input');
   createElement("br").parent("input");
+  createElement("br").parent("input");
+  
+  let reset = createButton("Reset");
   reset.parent('input');
   reset.mousePressed(resetSketch);
+
   let dbg = createButton("Debug");
   dbg.parent('input');
-  dbg.mousePressed(() => {
-    debug = !debug;
-  });
+  dbg.mousePressed(changeDebug);
+
   let loopBtn = createButton("Stop");
   loopBtn.parent('input');
   loopBtn.mousePressed(() => {
@@ -145,6 +135,7 @@ function changeBeta() { BETA = parseFloat(this.value()); }
 function changeColorOffset() { COLOR_OFFSET = parseFloat(this.value()); }
 function changeTrailLength() { MAX_TRAIL_LENGTH = parseFloat(this.value()); }
 function changePointsCount() { POINTS_COUNT = parseFloat(this.value()); }
+function changeDebug() { debug = !debug };
 
 
 function stop() {
@@ -156,10 +147,16 @@ function start() {
 }
 
 function setup() {
+  colorPalette = {
+		a: createVector(0.8, 0.5, 0.4),
+		b: createVector(0.2, 0.4, 0.2),
+		c: createVector(0.0, 1.0, 1.0),
+		d: createVector(0.0, 0.2, 0.25),
+	};
+
   createMenu();
 
-  let canvas = createCanvas(windowHeight, windowHeight, WEBGL);
-  canvas.parent('sketch');
+  createCanvas(windowHeight, windowHeight, WEBGL).parent('sketch');
 
   resetSketch();
 
