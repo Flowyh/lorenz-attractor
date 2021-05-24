@@ -1,4 +1,5 @@
 # Visualization of [Lorenz system](https://en.wikipedia.org/wiki/Lorenz_system) using [p5.js](https://p5js.org/).
+## Live preview: https://flowyh.github.io/lorenz-attractor/
 
 ### Run:
 Clone this repository using: ```git clone https://github.com/Flowyh/lorenz-attractor``` and run index.html.
