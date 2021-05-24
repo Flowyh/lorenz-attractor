@@ -15,17 +15,17 @@ class Point {
     this.trail = [];
     this.head = this.start;
     this.color = {
-			r: 255,
-			g: Math.random() * 255,
-			b: Math.random() * 50,
-		};
+      r: 255,
+      g: Math.random() * 255,
+      b: Math.random() * 50,
+    };
   }
 
   update() {
     let next = createVector(
-			SIGMA * (this.head.y - this.head.x) * TIME_STEP,
-			(this.head.x * (RHO - this.head.z) - this.head.y) * TIME_STEP,
-			(this.head.x * this.head.y - BETA * this.head.z) * TIME_STEP
+      SIGMA * (this.head.y - this.head.x) * TIME_STEP,
+      (this.head.x * (RHO - this.head.z) - this.head.y) * TIME_STEP,
+      (this.head.x * this.head.y - BETA * this.head.z) * TIME_STEP
     );
     
     this.head = this.head.add(next);
@@ -40,18 +40,18 @@ class Point {
     for (let i = 1; i < this.trail.length; ++i) {
       let next = this.trail[i];
       let color = palette(
-				(i + COLOR_OFFSET) / MAX_TRAIL_LENGTH,
-				colorPalette.a,
-				colorPalette.b,
-				colorPalette.c,
-				colorPalette.d
-			);
+        (i + COLOR_OFFSET) / MAX_TRAIL_LENGTH,
+        colorPalette.a,
+        colorPalette.b,
+        colorPalette.c,
+        colorPalette.d
+      );
       stroke(
-				color.r * 255,
-				color.g * 255,
-				color.b * 255,
-				100 - (this.trail.length - i) * (100 / MAX_TRAIL_LENGTH)
-			);
+        color.r * 255,
+        color.g * 255,
+        color.b * 255,
+        100 - (this.trail.length - i) * (100 / MAX_TRAIL_LENGTH)
+      );
       line(prev.x, prev.y, prev.z, next.x, next.y, next.z);
       prev = next;
     }
@@ -69,29 +69,29 @@ function palette(t, a, b, c, d ) {
 
 function resetSketch() {
   points = new Array;
-	for (let i = 0; i < POINTS_COUNT; i++) {
-		let randomCoordinate = Math.random() * (Math.random() < 0.5 ? -1 : 1) * 10;
-		points.push(
-			new Point(randomCoordinate, randomCoordinate, randomCoordinate)
-		);
-	}
+  for (let i = 0; i < POINTS_COUNT; i++) {
+    let randomCoordinate = Math.random() * (Math.random() < 0.5 ? -1 : 1) * 10;
+    points.push(
+      new Point(randomCoordinate, randomCoordinate, randomCoordinate)
+    );
+  }
 }
 
 function createMenu() {
   let menu = {
-		lab_SIGMA: createElement("p", "Sigma"),
-		inp_SIGMA: createInput(SIGMA),
-		lab_RHO: createElement("p", "Rho"),
-		inp_RHO: createInput(RHO),
-		lab_BETA: createElement("p", "Beta"),
-		inp_BETA: createInput(BETA),
-		lab_COLOR_OFFSET: createElement("p", "Color offset"),
-		inp_COLOR_OFFSET: createInput(COLOR_OFFSET),
-		lab_MAX_TRAIL_LENGTH: createElement("p", "Max trail length"),
-		inp_MAX_TRAIL_LENGTH: createInput(MAX_TRAIL_LENGTH),
-		lab_POINTS_COUNT: createElement("p", "Number of generated points"),
-		inp_POINTS_COUNT: createInput(POINTS_COUNT),
-	};
+    lab_SIGMA: createElement("p", "Sigma"),
+    inp_SIGMA: createInput(SIGMA),
+    lab_RHO: createElement("p", "Rho"),
+    inp_RHO: createInput(RHO),
+    lab_BETA: createElement("p", "Beta"),
+    inp_BETA: createInput(BETA),
+    lab_COLOR_OFFSET: createElement("p", "Color offset"),
+    inp_COLOR_OFFSET: createInput(COLOR_OFFSET),
+    lab_MAX_TRAIL_LENGTH: createElement("p", "Max trail length"),
+    inp_MAX_TRAIL_LENGTH: createInput(MAX_TRAIL_LENGTH),
+    lab_POINTS_COUNT: createElement("p", "Number of generated points"),
+    inp_POINTS_COUNT: createInput(POINTS_COUNT),
+  };
   for (el in menu) {
     menu[el].parent('input');
   }
@@ -148,11 +148,11 @@ function start() {
 
 function setup() {
   colorPalette = {
-		a: createVector(0.8, 0.5, 0.4),
-		b: createVector(0.2, 0.4, 0.2),
-		c: createVector(0.0, 1.0, 1.0),
-		d: createVector(0.0, 0.2, 0.25),
-	};
+    a: createVector(0.8, 0.5, 0.4),
+    b: createVector(0.2, 0.4, 0.2),
+    c: createVector(0.0, 1.0, 1.0),
+    d: createVector(0.0, 0.2, 0.25),
+  };
 
   createMenu();
 
@@ -172,8 +172,8 @@ function draw() {
   orbitControl();
   if (!frameRate()) return;
 
-	translate(0, 0, 0);
-	scale(width / 100);
+  translate(0, 0, 0);
+  scale(width / 100);
 
   for (p of points) {
     p.update();
